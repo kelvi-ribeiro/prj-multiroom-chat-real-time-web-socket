@@ -14,12 +14,26 @@ io.on('connection',function(socket){
         console.log('Usuário desconectou');
     });
     socket.on('msgParaServidor',function(data){        
-        console.log(data)
+        /* Diálago */
+        
         socket.emit('msgParaCliente',
         {apelido:data.apelido,mensagem:data.mensagem}
         );        
         socket.broadcast.emit('msgParaCliente',
         {apelido:data.apelido,mensagem:data.mensagem}
-        );        
+        );  
+        /* Participantes */ 
+        console.log(data)
+        if(parseInt(data.apelidoAtualizadoNosCliente) === 0){            
+            socket.emit(
+                'participantesParaCliente',
+                { apelido: data.apelido}
+            );
+            socket.broadcast.emit(
+                'participantesParaCliente',
+                { apelido: data.apelido}
+            );
+        }
+        
     });   
 });
