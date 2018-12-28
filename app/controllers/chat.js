@@ -6,6 +6,7 @@ module.exports.iniciaChat = function(app,req,res){
     var erros = req.validationErrors();
     if(erros){
         res.render('index',{validacao:erros});
+        return;
     }
 
     res.render('chat');
