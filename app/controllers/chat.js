@@ -9,7 +9,10 @@ module.exports.iniciaChat = function(app,req,res){
         return;
     }
 
-    app.get('io').emit('msgParaCliente',{apelido:dadosForm.apelido, mensagem:'Acabou de entrar no chat'});   
+    app.get('io')
+    .emit('msgParaCliente',
+    {apelido:dadosForm.apelido, mensagem:'Acabou de entrar no chat'}
+    );   
 
-    res.render('chat');
+    res.render('chat',{apelido:dadosForm.apelido});
 }

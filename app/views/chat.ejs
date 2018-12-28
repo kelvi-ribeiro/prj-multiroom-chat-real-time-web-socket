@@ -68,7 +68,7 @@
 			</div>
 		</nav>
 	
-		<div class="container">
+		<div class="container">			
             <div class="row conversa" id="conversa">
 				<div class="col-md-1"></div>
 				<div class="col-md-10" id="dialogos">
@@ -126,17 +126,16 @@
 		
 		<nav class="navbar navbar-default navbar-fixed-bottom" role="navigation">
 			<div class="container">
-				<div class="panel-body campo-mensagem">
-					<form>
+				<div class="panel-body campo-mensagem">					
 						<div class="col-md-12">
-							<div class="input-group">
-								<input type="text" class="form-control" placeholder="Mensagem">
+							<div class="input-group">								
+								<input type="text" class="form-control" placeholder="Mensagem" id="mensagem">
+								<input hidden type="text" hidden  id="apelido" value=<%=apelido%>>
 								<span class="input-group-btn">
-									<button class="btn btn-default" type="button">></button>
+									<button class="btn btn-default" id="enviar_mensagem" type="button">></button>
 								</span>
 							</div>
-						</div>
-					</form>
+						</div>					
 				</div>
 			</div>
 		</nav>		
@@ -145,7 +144,21 @@
 		<script src="/socket.io/socket.io.js"></script>
 		<script>
 			var socket = io('http://localhost');
-			socket.on('msgParaCliente', function(data){
+			function enviaMensagem(){
+				socket.emit('msgParaServidor',
+				{apelido:$('#apelido').val(),
+				mensagem:$('#mensagem').val()});				
+				$('#mensagem').val('');				
+			}
+			$('#enviar_mensagem').click(function(){
+				enviaMensagem();
+			});
+			$(document).keypress(function(e) {
+			if(e.which == 13) {
+				enviaMensagem();
+				}
+			});
+			socket.on('msgParaCliente', function(data){				
 				var html = '';
 				html += '<div class="dialogo">';
 					html += '<h4>' + data.apelido + '</h4>';
